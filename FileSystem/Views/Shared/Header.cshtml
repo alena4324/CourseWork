@@ -1,0 +1,41 @@
+﻿@{
+    if (Request.IsAuthenticated)
+    {
+        <a class="navbar-brand" href="@Url.Action("AllDrives", "Directory")">FileSystem</a>
+        <div class="nav navbar-nav navbar-right">
+            @if (this.User.Identity.Name == "admin")
+            {
+                <ul class="nav navbar-nav">
+                    <li class="dropdown">
+                        <a href="" data-toggle="dropdown" class="dropdown-toggle navbar-brand">Settings<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="@Url.Action("GetAllUsers", "Admin")">Users</a></li>
+                            <li><a href="@Url.Action("ChangePassword", "Account")">Change password</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <a class="navbar-brand" href="@Url.Action("LogOut", "Account")">Sign Out</a>
+            }
+            else
+            {
+                <ul class="nav navbar-nav">
+                    <li class="dropdown">
+                        <a href="" data-toggle="dropdown" class="dropdown-toggle navbar-brand">Settings<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="@Url.Action("ChangePassword", "Account")">Change password</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <a class="navbar-brand" href="@Url.Action("LogOut", "Account")">Sign Out</a>
+            }
+        </div>
+    }
+    else
+    {
+        <a class="navbar-brand" href="#">FileSystem</a>
+        <div class="nav navbar-nav navbar-right">
+            <a class="navbar-brand" href="@Url.Action("Login", "Account")">Log In</a>
+            <a class="navbar-brand" href="@Url.Action("Register", "Account")">Sign Up</a>
+        </div>
+    }
+}

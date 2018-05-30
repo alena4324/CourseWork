@@ -1,0 +1,36 @@
+﻿@model string
+
+<div class="modal-content">
+    <div class="modal-body">
+        <input hidden type="text" id="login" name="login" value="@Model" />
+        Do you want to delete the user @Model ?
+        <input type="button" id="submitDeleteUser" value="Delete">
+        <input type="button" id="cancelDeleteUser" value="Cancel">
+    </div>
+</div>
+
+@*<script type="text/javascript">
+    $(document).ready(function () {
+        //$('#submitDeleteUser').click(function (e) {
+        //    var data = JSON.stringify({
+        //        'login': $('#login').val()
+        //    });
+        //    $.ajax({
+        //        type: "POST",
+        //        url: "/Admin/DeleteUser/",
+        //        contentType: "application/json; charset=utf-8",
+        //        data: data,
+        //        success: function (result) {
+        //            //$("#creatingButton").val('Create new folder/file');
+        //            //$("#creatingForm").prop('hidden', true);
+        //            window.location.href = "/Admin/GetAllUsers/";
+        //        },
+        //        error: function (result) {
+        //            alert("The file/folder doesn't create.");
+        //            window.location.href = "/Admin/GetAllUsers/";
+        //        }
+        //    });
+        //});
+    });
+</script>*@
+

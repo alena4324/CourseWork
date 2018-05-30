@@ -1,0 +1,76 @@
+﻿@using FileSystem.Models;
+@model IEnumerable<UserModelMVC>
+@{
+    ViewBag.Title = "GetAllUsers";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div id="modDialog" class="modal fade">
+    <div id="dialogContent" class="modal-dialog"></div>
+</div>
+<table id="users">
+    <tr id="titles">
+        <th>Users</th>
+        <th>IsActive</th>
+        <th>Roles</th>
+        <th>IsAdmin</th>
+        <th>Delete</th>
+    </tr>
+    @foreach (var user in Model)
+    {
+    <tr>
+        <th>@user.Login</th>
+        <th>@user.IsActive</th>
+        <th>
+            @foreach (var role in user.Roles)
+        {
+            @role.Name
+            @:<br />
+    }
+        </th>
+
+        <th>
+            @if (!(user.Roles.Count() == 1 && user.Roles.Where(r => r.Name == "admin").SingleOrDefault() != null))
+        {
+            <label>
+                <input id="idAdmin" type="checkbox" onclick='location.href="@Url.Action("ChangeRole", "Admin", new { login = user.Login })"'
+                       @{ if (user.Roles.Where(r => r.Name == "admin").SingleOrDefault() != null) { @: checked
+                       } } />
+                <span class="checkmark"></span>
+            </label>
+    }
+        </th>
+        <th>
+            @*<button onclick='location.href="@Url.Action("DeleteUser", "Admin", new { login=user.Login})"'>Delete</button>*@
+            @if (!(user.Roles.Count() == 1 && user.Roles.Where(r => r.Name == "admin").SingleOrDefault() != null) && user.IsActive == true)
+        {
+            <a class="buttonDelete" href="@Url.Action("ConfirmDeletingUser", "Admin", new { login = user.Login })">
+                <span id="buttonDelete" class="glyphicon glyphicon-remove icon"></span>
+            </a>
+
+
+    }
+    else if (!(user.Roles.Count() == 1 && user.Roles.Where(r => r.Name == "admin").SingleOrDefault() != null) && user.IsActive == false)
+    {
+        <a id="buttonRenew" href="@Url.Action("RenewUser", "Admin", new { login = user.Login })">
+            <span class="glyphicon glyphicon-plus icon"></span>
+        </a>
+}
+        </th>
+    </tr>
+    }
+</table>
+
+<script type="text/javascript">
+    $(function () {
+        $.ajaxSetup({ cache: false });
+        $(".buttonDelete").click(function (e) {
+
+            e.preventDefault();
+            $.get(this.href, function (data) {
+                $('#dialogContent').html(data);
+                $('#modDialog').modal('show');
+            });
+        });
+    })
+</script>
+

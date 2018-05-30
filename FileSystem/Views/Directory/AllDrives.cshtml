@@ -1,0 +1,17 @@
+﻿@model IEnumerable<string>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div id="drives">
+    <div class="div-table-row" id="titles">
+        <div class="div-table-col">Drives:</div>
+    </div>
+    @foreach (var drive in Model)
+    {
+        <p id="drive">@Html.ActionLink(drive + "...", "Table", new { path = drive.Replace(@"\", "") }, new { @style = "color:black;" })</p>
+
+        @*<p id="drive">@Ajax.ActionLink(drive + "...", "Table", new { path = drive.Replace(@"\", "") }, new AjaxOptions { UpdateTargetId="drives"})</p>*@
+    }
+</div>
+
+

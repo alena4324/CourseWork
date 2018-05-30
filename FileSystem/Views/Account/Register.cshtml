@@ -1,0 +1,44 @@
+﻿@model FileSystem.Models.RegisterViewModel
+
+@{
+    ViewBag.Title = "Sign Up";
+}
+
+<h2>Sign up</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    @Html.AntiForgeryToken()
+
+<fieldset>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Login)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.Login)
+        @Html.ValidationMessageFor(model => model.Login)
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Password)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "passwordInput" } })
+        @Html.ValidationMessageFor(model => model.Password)
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.ConfirmPassword)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new { @class = "passwordInput" } })
+        @Html.ValidationMessageFor(model => model.ConfirmPassword)
+    </div>
+
+    <p>
+        <input type="submit" value="Sign Up" />
+    </p>
+</fieldset>
+}

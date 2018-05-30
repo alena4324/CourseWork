@@ -1,0 +1,35 @@
+﻿@model IEnumerable<FileInfo>
+@{
+    Layout = null;
+}
+
+    @foreach (var file in Model)
+    {
+<div class="div-table-row">
+    @*<li id="file">@Ajax.ActionLink(file.Name, "Directories", new { path = file.FullName.Replace(":", "") }, new AjaxOptions { UpdateTargetId = "file" })</li>*@
+    <div class="div-table-col">
+        <span class="glyphicon glyphicon-file file"></span>@file.Name
+    </div>
+    <div class="div-table-col">@file.LastWriteTime </div>
+    <div class="div-table-col"> @file.Extension </div>
+    @if (Request.IsAuthenticated && this.User.Identity.Name == "admin")
+    {
+           
+        <div class="div-table-col">
+            <a value="Delete" class="delete" onclick='location.href="@Url.Action("DeleteFolder", "Directory", new {  path = file.FullName.Replace(":", "").Replace(".","\\"), type=file.Extension.Replace(".","")  })"'>
+                <span class="glyphicon glyphicon-remove icon"></span>
+            </a>
+        </div>
+    }
+</div>
+    }
+
+@*<script type="text/javascript">
+    $(document).ready(function () {
+        $("#file").click(function () {
+            @
+        });
+</script>*@
+
+
+

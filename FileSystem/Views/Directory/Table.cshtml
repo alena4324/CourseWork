@@ -1,0 +1,108 @@
+﻿@model string
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using System.Text.RegularExpressions;
+@{
+    if (Request.IsAuthenticated && this.User.Identity.Name == "admin")
+    {
+        @Html.Partial("CreateNewItem", Model);
+    }
+}
+<label for="path">Path: </label>
+<input type="text" id="path" value="@Model" style="width:50%" />
+<br />
+
+<label for="search">Search: </label>
+<input type="text" id="search" style="width:50%" />
+<input type="button" id="searchButton" value="Search" />
+<br />
+
+<input type="button" value="..." style="height: 30px"
+       @if (Model.Contains("/")) { @: onclick='location.href="@Url.Action("Table", "Directory", new { path = (new Regex(@"^(.+(?=\/|\\)|.+$)")).Match(Model).Value })"'
+       } else { @: onclick='location.href="@Url.Action("AllDrives", "Directory")"'
+       } />
+<br />
+<div class="div-table">
+    <div class="div-table-row" id="titles">
+        <div class="div-table-col">
+            <a id="sortByName">
+                Name:
+                <span class="glyphicon glyphicon-chevron-up"></span>
+            </a>
+        </div>
+        <div class="div-table-col">
+            <a id="sortByDate">
+                Date modified:
+                <span class="glyphicon glyphicon-chevron-up"></span>
+            </a>
+        </div>
+        <div class="div-table-col">
+            <a id="sortByType">
+                Type:
+                <span class="glyphicon glyphicon-chevron-up"></span>
+            </a>
+        </div>
+    </div>
+    @*<p id="directories"> @{ Html.RenderAction("Directories", new { path = Model.Replace(":", "") });} </p>
+        <p id="files"> @{ Html.RenderAction("Files", new { path = Model.Replace(":", "") }); }</p>*@
+    <p class="files">@*</p>*@ @{ Html.RenderAction("GetAllFiles", new { path = Model.Replace(":", "") });} </p>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+    
+        //$('#searchButton').click(function (e) {
+        //    var name = $('#search').val();
+        //    var path = $('#path').val();
+        //    var result = true;
+
+        //    if (name === "") {
+        //        alert("Invalid name.");
+        //        result = false;
+        //    }
+
+        //    if (result === true) {
+        //        var data = JSON.stringify({
+        //            'path': $('#path').val(),
+        //            'name': $('#search').val()
+        //        });
+        //        $.ajax({
+        //            type: "POST",
+        //            url: "/Directory/SearchFiles",
+        //            contentType: "application/json; charset=utf-8",
+        //            data: data,
+        //            success: function (result) {
+        //                window.location.href = "/Directory/SearchFiles/" + $('#path').val() + "?name=" + $('#search').val();
+        //            },
+        //            error: function (result) {
+        //                alert("The file/folder doesn't create.");
+        //                window.location.href = "/Directory/Table/" + $('#path').val();
+        //            }
+        //        });
+        //    }
+        //});
+
+        //$("#path").keyup(function (e) {
+        //    if (e.keyCode == 13) {
+        //        var data = JSON.stringify({
+        //            'path': $('#path').val()
+        //        });
+        //        $.ajax({
+        //            type: "POST",
+        //            url: "/Directory/Table",
+        //            contentType: "application/json; charset=utf-8",
+        //            data: data,
+        //            success: function () {
+        //                window.location.href = "/Directory/Table/" + $('#path').val();
+        //            },
+        //            error: function () {
+        //                alert("The file/folder isn't exist.");
+        //                window.location.href = "/Directory/AllDrives";
+        //            }
+        //        });
+        //    }
+        //});       
+    });
+
+</script>

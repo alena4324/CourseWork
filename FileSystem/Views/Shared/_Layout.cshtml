@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link href="~/Content/Styles.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-theme.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <title>@ViewBag.Title</title>
+    @Scripts.Render("~/bundles/jquery")
+    @*@Scripts.Render("~/Scripts/jquery-3.0.0.js")*@
+    @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
+    @Scripts.Render("~/Scripts/bootstrap.min.js")
+    @Scripts.Render("~/bundles/javascript")
+    @*@Scripts.Render("~/Scripts/JavaScript.js")*@
+    @Scripts.Render("~/bundles/jqueryui")
+</head>
+<body class="minor">
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            @Html.Partial("Header");
+        </div>
+    </nav>
+    <div class="container">
+        <div class="row">
+            <div class="col-6 main">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+</body>
+</html>

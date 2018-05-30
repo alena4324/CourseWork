@@ -1,0 +1,291 @@
+﻿@model IEnumerable<FileSystemInfo>
+
+@*<button id="sortByDate" >SortByDate</button>*@
+
+<div id="modDialog" class="modal fade">
+    <div id="dialogContent" class="modal-dialog"></div>
+</div>
+
+
+    @foreach (var folder in Model)
+    {
+        if (String.IsNullOrEmpty(folder.Extension))
+        {
+            <div class="div-table-row itemRow">
+                @if (!folder.Attributes.ToString().Contains("Hidden"))
+                {
+                    <div class="div-table-col pointer">
+                        <span class="glyphicon glyphicon-folder-open icon"></span>
+                        @Html.ActionLink(folder.Name, "Table", new { path = folder.FullName.Replace(":", "") }, new { @style = "color:black;", @class = "itemName" })
+                    </div>
+                    <div class="div-table-col date itemDate">@folder.LastWriteTime </div>
+                    <div class="div-table-col itemType" >folder</div>
+
+                    if (Request.IsAuthenticated && this.User.Identity.Name == "admin")
+                    {
+                        <div @*id="deleteFolder"*@ class="div-table-col pointer">
+                            <a value="Delete" class="delete" href="@Url.Action("ConfirmDeletingDirectory", "Directory", new { path = folder.FullName.Replace(":", "") })">
+                                <span class="glyphicon glyphicon-remove icon"></span>
+                            </a>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="div-table-col directory pointer">
+                        <span class="glyphicon glyphicon-folder-close icon"></span>
+                        <a href="" class="itemName" style="color:black;" onclick="OnHidden()">@folder.Name</a>
+                    </div>
+                    <div class="div-table-col date itemDate" >@folder.LastWriteTime </div>
+                    <div class="div-table-col itemType">folder</div>
+                }
+            </div>
+
+        }
+    }
+    @foreach (var file in Model)
+    {
+        if (!String.IsNullOrEmpty(file.Extension))
+        {
+            <div class="div-table-row itemRow" >
+                @if (!file.Attributes.ToString().Contains("Hidden"))
+                {
+                    <div class="div-table-col" style="cursor:default">
+                        <span class="glyphicon glyphicon-file"></span>
+                        <a style="color:black;" class="itemName">@file.Name</a> 
+                    </div>
+                    <div class="div-table-col date itemDate">@file.LastWriteTime</div>
+                    <div class="div-table-col itemType">@file.Extension</div>
+
+                    if (Request.IsAuthenticated && this.User.Identity.Name == "admin")
+                    {
+
+                        <div class="div-table-col pointer">
+                            <a  value="Delete" id="file" class="delete" href="@Url.Action("ConfirmDeletingFile", "Directory", new {  path = file.FullName.Replace(":", "").Replace(".","\\") ,type=file.Extension.Replace(".","") })">
+                                <span class="glyphicon glyphicon-remove icon"></span>
+                            </a>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="div-table-col pointer">
+                        <span class="glyphicon glyphicon-file"></span>
+                        <a style="color:black;" class="itemName">@file.Name</a>
+                    </div>
+                    <div class="div-table-col date itemDate">@file.LastWriteTime </div>
+                    <div  class="div-table-col itemType"> @file.Extension </div>
+                }
+            </div>
+        }
+    }
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.ajaxSetup({ cache: false });
+
+        $(".delete").click(function (e) {
+            e.preventDefault();
+            $.post(this.href, function (data) {
+                $('#dialogContent').html(data);
+                $('#modDialog').modal('show');
+            });
+        });
+
+        //$("#sortByDate").click(function (e) {
+        ////    var $items = $('.files');
+        ////    var $dates = $('.itemDate');
+        ////    var $target = $('.files');
+
+        ////    //$dates.each(function () {
+        ////    //    $(this).val(Date.parse($(this)));
+        ////    //});
+
+        ////    $dates.sort(function (a, b) {
+        ////        return new Date(b.date) - new Date(a.date);
+        ////    });
+
+        ////    $dates.detach().appendTo($target);
+        ////});
+
+
+        //    //var nodeList = document.getElementsByClassName('itemRow');
+        //    //var itemsArray = [];
+        //    //var parent = document.getElementsByClassName('files')[0];
+        //    //for (var i = 0; i < nodeList.length; i++) {
+        //    //    itemsArray.push(nodeList[i]);
+        //    //}
+        //    //itemsArray.sort(function (nodeA, nodeB) {
+        //    //    var textA = nodeA.getElementsByClassName('itemDate')[0].textContent;
+        //    //    var textB = nodeB.getElementsByClassName('itemDate')[0].textContent;
+        //    //    var numberA = new Date(textA);
+        //    //    var numberB = new Date(textB);
+        //    //    if (numberA < numberB) return -1;
+        //    //    if (numberA > numberB) return 1;
+        //    //    return 0;
+        //    //}).forEach(function (node) {
+        //    //    parent.appendChild(node);
+        //    //    });
+
+        //    //if()
+        //    //$("#sortByDate").
+        //    if ($(this).find("span").hasClass("glyphicon glyphicon-chevron-up")) {
+        //        $(this).find("span").removeClass("glyphicon glyphicon-chevron-up");
+        //        $(this).find("span").addClass("glyphicon glyphicon-chevron-down");
+        //    }
+        //    else {
+        //        $(this).find("span").removeClass("glyphicon glyphicon-chevron-down");
+        //        $(this).find("span").addClass("glyphicon glyphicon-chevron-up");
+        //    }
+        //    //$(this).find("span").removeClass("glyphicon glyphicon-chevron-up");
+        //    //$(".glyphicon glyphicon-chevron-up").removeClass("glyphicon glyphicon-chevron-up");
+
+
+        //    var nodeList = []; /*document.getElementsByClassName('div-table-row');*/
+        //    for (var i = 1; i < document.getElementsByClassName('div-table-row').length; i++) {
+        //        nodeList[i-1]=document.getElementsByClassName('div-table-row')[i];
+        //    };
+        //    var itemsArray = [];
+        //    var parent = document.getElementsByClassName('div-table')[0];
+        //    for (var i = 0; i < nodeList.length; i++) {
+        //        itemsArray.push(parent.removeChild(nodeList[i]));
+        //    }
+        //    itemsArray.sort(function (nodeA, nodeB) {
+        //        var textA = nodeA.getElementsByClassName('div-table-col')[1].textContent;
+        //        var textB = nodeB.getElementsByClassName('div-table-col')[1].textContent;
+        //        var numberA = new Date(textA);
+        //        var numberB = new Date(textB);
+        //        if (numberA < numberB) return -1;
+        //        if (numberA > numberB) return 1;
+        //        return 0;
+        //    });
+
+        //    if ($(this).find("span").hasClass("glyphicon glyphicon-chevron-down")) {
+        //        itemsArray.reverse();
+        //    }
+
+        //    //}).forEach(function (node) {
+        //    //    parent.appendChild(node)
+        //    //});
+        //    itemsArray.forEach(function (node) {
+        //        if (node.getElementsByClassName('itemType')[0].textContent === 'folder')
+        //                parent.appendChild(node);
+
+        //        });
+        //    itemsArray.forEach(function (node) {
+        //        if (node.getElementsByClassName('itemType')[0].textContent !== 'folder')
+        //                parent.appendChild(node);
+        //    });
+        //});
+
+
+        //$("#sortByName").click(function (e) {
+
+        //    if ($(this).find("span").hasClass("glyphicon glyphicon-chevron-up")) {
+        //        $(this).find("span").removeClass("glyphicon glyphicon-chevron-up");
+        //        $(this).find("span").addClass("glyphicon glyphicon-chevron-down");
+        //    }
+        //    else {
+        //        $(this).find("span").removeClass("glyphicon glyphicon-chevron-down");
+        //        $(this).find("span").addClass("glyphicon glyphicon-chevron-up");
+        //    }
+
+        //    var nodeList = []; /*document.getElementsByClassName('div-table-row');*/
+        //    for (var i = 1; i < document.getElementsByClassName('div-table-row').length; i++) {
+        //        nodeList[i - 1] = document.getElementsByClassName('div-table-row')[i];
+        //    };
+        //    var itemsArray = [];
+        //    var parent = document.getElementsByClassName('div-table')[0];
+        //    for (var i = 0; i < nodeList.length; i++) {
+        //        itemsArray.push(parent.removeChild(nodeList[i]));
+        //    }
+        //    itemsArray.sort(function (nodeA, nodeB) {
+        //        var textA = nodeA.getElementsByClassName('div-table-col')[0].textContent.toLowerCase();
+        //        var textB = nodeB.getElementsByClassName('div-table-col')[0].textContent.toLowerCase();
+        //        //var numberA = new Date(textA);
+        //        //var numberB = new Date(textB);
+        //        if (textA < textB) return -1;
+        //        if (textA > textB) return 1;
+        //        return 0;
+        //    });
+        //    //}).forEach(function (node) {
+        //    //    parent.appendChild(node)
+        //    //});
+
+        //    if ($(this).find("span").hasClass("glyphicon glyphicon-chevron-down")) {
+        //        itemsArray.reverse();
+        //    }
+
+        //    itemsArray.forEach(function (node) {
+        //        if (node.getElementsByClassName('itemType')[0].textContent === 'folder')
+        //            parent.appendChild(node);
+
+        //    });
+        //    itemsArray.forEach(function (node) {
+        //        if (node.getElementsByClassName('itemType')[0].textContent !== 'folder')
+        //            parent.appendChild(node);
+        //    });
+        //});
+
+        //$("#sortByType").click(function (e) {
+
+        //    if ($(this).find("span").hasClass("glyphicon glyphicon-chevron-up")) {
+        //        $(this).find("span").removeClass("glyphicon glyphicon-chevron-up");
+        //        $(this).find("span").addClass("glyphicon glyphicon-chevron-down");
+        //    }
+        //    else if ($(this).find("span").hasClass("glyphicon glyphicon-chevron-down")){
+        //        $(this).find("span").removeClass("glyphicon glyphicon-chevron-down");
+        //        $(this).find("span").addClass("glyphicon glyphicon-chevron-up");
+        //    }
+
+        //    var nodeList = []; /*document.getElementsByClassName('div-table-row');*/
+        //    for (var i = 1; i < document.getElementsByClassName('div-table-row').length; i++) {
+        //        nodeList[i - 1] = document.getElementsByClassName('div-table-row')[i];
+        //    };
+        //    var itemsArray = [];
+        //    var parent = document.getElementsByClassName('div-table')[0];
+        //    for (var i = 0; i < nodeList.length; i++) {
+        //        itemsArray.push(parent.removeChild(nodeList[i]));
+        //    }
+
+        //    itemsArray.sort(function (nodeA, nodeB) {
+        //        var textA = nodeA.getElementsByClassName('div-table-col')[2].textContent;
+        //        var textB = nodeB.getElementsByClassName('div-table-col')[2].textContent;
+        //        //var numberA = new Date(textA);
+        //        //var numberB = new Date(textB);
+        //        if (textA < textB) return -1;
+        //        if (textA > textB) return 1;
+        //        return 0;
+        //    });
+
+        //    if ($(this).find("span").hasClass("glyphicon glyphicon-chevron-down")) {
+        //        itemsArray.reverse();
+        //    }
+
+
+
+        //    //itemsArray.sort(function (nodeA, nodeB) {
+        //    //    var textA = nodeA.getElementsByClassName('div-table-col')[2].textContent.toLocaleLowerCase;
+        //    //    var textB = nodeB.getElementsByClassName('div-table-col')[2].textContent.toLocaleLowerCase;
+        //    //    if (textA < textB) return -1;
+        //    //    if (textA > textB) return 1;
+        //    //    return 0;
+        //    //});
+
+        //    //}).forEach(function (node) {
+        //    //    parent.appendChild(node)
+        //    //});
+        //    itemsArray.forEach(function (node) {
+        //        if (node.getElementsByClassName('itemType')[0].textContent === 'folder')
+        //            parent.appendChild(node);
+
+        //    });
+        //    itemsArray.forEach(function (node) {
+        //        if (node.getElementsByClassName('itemType')[0].textContent !== 'folder')
+        //            parent.appendChild(node);
+        //    });
+        //});
+    });
+            
+</script>

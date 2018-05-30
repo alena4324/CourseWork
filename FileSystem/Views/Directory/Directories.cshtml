@@ -1,0 +1,104 @@
+﻿@model IEnumerable<DirectoryInfo>
+@*@{
+        Layout = "~/Views/Shared/_Layout.cshtml";
+        //Layout = null;
+    }*@
+@*@{
+        if (Request.IsAuthenticated && this.User.Identity.Name == "admin")
+        {
+            @Html.Partial("CreateNewItem", Model.ElementAt(0).Parent.FullName.Replace(":", ""));
+        }
+    }*@
+@*<input type="button" value="..." class="btn" style="height: 30px"
+    @if (Model.ElementAt(0).Parent.Parent != null) { @: onclick='location.href="@Url.Action("Directories", "Directory", new { path = Model.ElementAt(0).Parent.Parent.FullName.Replace(":", "") })"'
+    } else { @: onclick='location.href="@Url.Action("AllDrives", "Directory")"'
+    }>*@
+
+@*<div class="div-table">
+    <div class="div-table-row" id="titles">
+        <div class="div-table-col">Directory</div>
+        <div class="div-table-col">Data modified</div>
+        <div class="div-table-col">Type</div>
+    </div>*@
+@foreach (var directory in Model)
+{
+    <div class="div-table-row">
+        @*@<p id="directory">@Ajax.ActionLink(directory.Name, "Directories", new { path = directory.FullName.Replace(":", "") }, new AjaxOptions { UpdateTargetId = "directory" })</p>
+        *@
+        @*<a id="directory"
+            @if (directory.Attributes.ToString().Contains("Hidden"))
+            {
+                @:href=""
+            }>*@
+
+        @{
+            if (!directory.Attributes.ToString().Contains("Hidden"))
+            {
+                <div class="div-table-col">
+                    <span class="glyphicon glyphicon-folder-open icon"></span>
+                    @Html.ActionLink(directory.Name, "Table", new { path = directory.FullName.Replace(":", "") }, new { @style = "color:black;" })
+                </div>
+                <div class="div-table-col">@directory.LastWriteTime </div>
+                <div class="div-table-col"> folder </div>
+                if (Request.IsAuthenticated && this.User.Identity.Name == "admin")
+                {
+                    <div id="buttonDelete" class="div-table-col">
+                        <a value="Delete" class="delete" onclick='location.href="@Url.Action("DeleteFolder", "Directory", new { path = directory.FullName.Replace(":", "") })"'>
+                            <span class="glyphicon glyphicon-remove icon"></span>
+                        </a>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="div-table-col directory">
+                    <span class="glyphicon glyphicon-folder-close icon"></span>
+                    <a href="" style="color:black;"  onclick="OnHidden()"> @directory.Name</a>
+                </div>
+                <div class="div-table-col">@directory.LastWriteTime </div>
+                <div class="div-table-col"> folder </div>
+
+            }
+        }
+        @*</a>*@
+    </div>
+}
+@*<p id="files">@{ Html.RenderAction("Files", new { path = Model.ElementAt(0).Parent.FullName }); }</p>*@
+@*<p id="files">@Html.RouteLink("Files", new { path = Model.ElementAt(0).Parent.FullName })</p>*@
+@*</div>*@
+
+
+
+
+
+
+@*<script type="text/javascript">
+
+
+        $("#back").click(function () {
+            $.ajax({
+                type: "GET",
+                //url: '/Directory/Directories',
+                data:
+                {@if (Model.ElementAt(0).Parent.Parent != null)
+                    {
+                        @:path: @Model.ElementAt(0).Parent.Parent.FullName.Replace(":", "") }, url: '/Directory/Directories'
+                    }
+                    else
+                    {
+                        @:{}, url: '/AllDrives'
+                    }
+                ,
+                success: function () {
+                    @if ( Model.ElementAt(0).Parent.Parent!=null)
+                    {
+                        @:location.href="@Url.Action("Directories", "Directory", new { path = Model.ElementAt(0).Parent.Parent.FullName.Replace(":", "") })"
+                    }
+                    else {
+                        @:location.href ="@Url.Action("AllDrives", "Directory")"
+                    }
+                    //alert('of');
+                }
+            });
+        });
+    </script>*@

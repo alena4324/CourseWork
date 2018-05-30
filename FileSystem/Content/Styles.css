@@ -1,0 +1,132 @@
+﻿.minor {
+    background-color: lightgrey;
+}
+
+.main {
+    background-color: whitesmoke;
+    height: 150%;
+    font-size: medium;
+    padding: 5%;
+}
+
+.name {
+    font-size: large;
+    margin: 3%;
+}
+
+/*a{
+    color:black;
+}*/
+
+.pointer {
+    color:black;
+    cursor: pointer;
+}
+
+.icon {
+    color: black;
+    cursor: pointer;
+}
+
+/*table for users*/
+#titles {
+    font-weight: bold;
+}
+
+#users {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+    #users td, #users th {
+        border: 1px solid #ddd;
+        padding: 8px;       
+    }
+
+    #users tr:nth-child(even) {
+        background-color: white;
+    }
+
+    #users tr:hover {
+        background-color: #ddd;
+    }
+
+    #users th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: center;
+        background-color: whitesmoke;
+        color: black;
+    }
+
+
+/*table for files*/
+.div-table {
+    display: table;
+    width: 100%;
+    /*border: 1px solid #666666;*/
+    border-spacing: 10px; /* cellspacing:poor IE support for  this */
+}
+
+.div-table-row {
+    display: table-row;
+    width: auto;
+    clear: both;
+}
+
+.div-table-col {
+    float: left; /* fix for  buggy browsers */
+    display: table-column;
+    width: 25%;
+}
+
+/*for for creating file/folder*/
+/* Style inputs with type="text", select elements and textareas */
+/*#itemName, #itemExtension*/
+input[type=text], input[type=password] {
+    width: 20%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    resize: vertical;
+}
+
+input[type=submit] {
+    background-color: #383e38;
+    color: white;
+    padding: 8px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom:1%;
+    margin-top:1%;
+}
+
+.radioButtons {
+    margin-top: 8px;
+    margin-bottom: 3px;
+}
+/*input[type=submit]:hover {
+        background-color: #383e38;
+    }*/
+#creatingForm {
+    padding: 5px;
+    margin: 5px 5px 5px 5px;
+    border-bottom: 1px solid #ddd;
+}
+
+input[type=button] {
+    border: 7px;
+    border-radius: 2px;
+    margin: 8px;
+    background-color: #bfbfbf;
+}
+
+/*modal confirm deleting file*/
+
+#modalWindow {
+    align-items: center;
+}

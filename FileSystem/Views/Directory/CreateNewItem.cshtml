@@ -1,0 +1,75 @@
+﻿@model string
+<input type="button" id="creatingButton" value="Create new folder/file">
+
+@*@using (Html.BeginForm("CreateNewItem", "Directory", FormMethod.Post))*@
+@*{
+    @Html.AntiForgeryToken()*@
+
+<div hidden id="creatingForm" name="creatingForm">
+    <input hidden type="text" id="pathA" name="pathA" value="@Model" />
+
+    <a><input type="text" id="itemName" name="name" @*pattern="[^!#$%^&*()_]"*@ required placeholder="Name.."></a>
+    <a>.</a>
+    <a><input disabled type="text" style="width: 10%;" id="itemExtension" name="type" @*pattern="[\w]"*@ placeholder="Extension.."></a>
+    <p class="radioButtons">
+        <input id="creatingFolder" name="creatingFolder" type="radio" checked> Folder<br>
+        <input id="creatingFile" name="creatingFile" type="radio"> File<br>
+    </p>
+    @*<label for="itemExtension">Extensions</label>
+        <input disabled type="text" id="itemExtension" name="type" pattern="[\w]" placeholder="Extension..">*@
+    <input type="submit" id="submitCreatingFile" value="Create">
+</div>
+@*}*@
+
+
+@*<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('#submitCreatingFile').click(function (e) {
+            var name = $('#itemName').val();
+            var extension = $('#itemExtension').val();
+            var folder = $('#creatingFolder').is(':checked');
+            var file = $('#creatingFile').is(':checked');
+            var result = false;
+
+            if (folder === true) {
+                if (name === "" || /[!#$%^&*()_]/.test(name) === true)
+                    alert("Invalid folder name.");
+                else
+                    result = true;
+
+            }
+            else if (file === true) {
+                if (name === "" || /[!#$%^&*()_]/.test(name) === true || extension === "" || /[\W]/.test(extension) === true)
+                    alert("Invalid file name or extension.");
+                else
+                    result = true;
+            }
+            if (result === true) {
+                var data = JSON.stringify({
+                    'pathA': $('#pathA').val(),
+                    'name': $('#itemName').val(),
+                    'type': $('#itemExtension').val()
+                });
+                $.ajax({
+                    type: "POST",
+                    url: "/Directory/CreateNewItem",
+                    contentType: "application/json; charset=utf-8",
+                    data: data,
+                    success: function (result) {
+                        //$("#creatingButton").val('Create new folder/file');
+                        //$("#creatingForm").prop('hidden', true);
+                        window.location.href = "/Directory/Table/" + $('#pathA').val();
+                    },
+                    error: function (result) {
+                        alert("The file/folder doesn't create.");
+                        window.location.href = "/Directory/Table/" + $('#pathA').val();
+                    }
+                });
+            }
+
+
+        });
+    });
+
+</script>*@
